@@ -2,6 +2,7 @@
 #define LINMATH_H
 
 #include <math.h>
+#include <string.h>
 
 #ifdef LINMATH_NO_INLINE
 #define LINMATH_H_FUNC static
@@ -205,7 +206,7 @@ LINMATH_H_FUNC void mat4x4_rotate(mat4x4 R, mat4x4 M, float x, float y, float z,
 	float c = cosf(angle);
 	vec3 u = {x, y, z};
 
-	if(vec3_len(u) > 1e-4) {
+	if(vec3_len(u) > 1e-4f) {
 		vec3_norm(u, u);
 		mat4x4 T;
 		mat4x4_from_vec3_mul_outer(T, u, u);
@@ -313,7 +314,7 @@ LINMATH_H_FUNC void mat4x4_invert(mat4x4 T, mat4x4 M)
 LINMATH_H_FUNC void mat4x4_orthonormalize(mat4x4 R, mat4x4 M)
 {
 	mat4x4_dup(R, M);
-	float s = 1.;
+	float s = 1.f;
 	vec3 h;
 
 	vec3_norm(R[2], R[2]);
@@ -369,7 +370,7 @@ LINMATH_H_FUNC void mat4x4_perspective(mat4x4 m, float y_fov, float aspect, floa
 {
 	/* NOTE: Degrees are an unhandy unit to work with.
 	 * linmath.h uses radians for everything! */
-	float const a = 1.f / tan(y_fov / 2.f);
+	float const a = 1.f / tanf(y_fov / 2.f);
 
 	m[0][0] = a / aspect;
 	m[0][1] = 0.f;
@@ -608,7 +609,7 @@ LINMATH_H_FUNC void mat4x4_arcball(mat4x4 R, mat4x4 M, vec2 _a, vec2 _b, float s
 	vec3 c_;
 	vec3_mul_cross(c_, a_, b_);
 
-	float const angle = acos(vec3_mul_inner(a_, b_)) * s;
+	float const angle = acosf(vec3_mul_inner(a_, b_)) * s;
 	mat4x4_rotate(R, M, c_[0], c_[1], c_[2], angle);
 }
 #endif
